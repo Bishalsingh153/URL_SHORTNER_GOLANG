@@ -22,6 +22,11 @@ func main() {
 
 	http.HandleFunc("/shorten", func(w http.ResponseWriter, r *http.Request) {
 		originalUrl := r.URL.Query().Get("url")
+		if originalUrl == "" {
+			http.Error(w, "URL is required", http.StatusBadRequest)
+			return
+		}
+
 		shortCode := generateShortCode()
 
 		for {
