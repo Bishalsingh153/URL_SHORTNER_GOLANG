@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/big"
 	"net/http"
+	"net/url"
 )
 
 func main() {
@@ -24,6 +25,13 @@ func main() {
 		originalUrl := r.URL.Query().Get("url")
 		if originalUrl == "" {
 			http.Error(w, "URL is required", http.StatusBadRequest)
+			return
+		}
+
+		parsedURL, err := url.ParseRequestURI(originalUrl)
+
+		if err != nil || parsedURL.Scheme == "" || parsedURL.Host == "" {
+			http.Error(w, "Invalid URL", http.StatusBadRequest)
 			return
 		}
 
