@@ -30,7 +30,7 @@ func main() {
 
 		parsedURL, err := url.ParseRequestURI(originalUrl)
 
-		if err != nil || parsedURL.Scheme == "" || parsedURL.Host == "" {
+		if err != nil || parsedURL.Host == "" || (parsedURL.Scheme != "http" && parsedURL.Scheme != "https") {
 			http.Error(w, "Invalid URL", http.StatusBadRequest)
 			return
 		}
