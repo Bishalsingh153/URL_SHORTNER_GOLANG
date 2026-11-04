@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/rand"
+	"encoding/json"
 	"fmt"
 	"math/big"
 	"net/http"
@@ -55,7 +56,12 @@ func main() {
 
 		fmt.Println("Received URL:", originalUrl)
 
-		fmt.Fprintln(w, "Your short url is: http://localhost:8080/"+shortCode)
+		w.Header().Set("Content-Type", "application/json")
+
+		response := map[string]string{
+			"short_url": "http://localhost:8080/" + shortCode,
+		}
+		json.NewEncoder(w).Encode(response)
 
 	})
 
