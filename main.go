@@ -9,6 +9,10 @@ import (
 	"net/url"
 )
 
+type ShortenRequest struct {
+	URL string `json:"url"`
+}
+
 func main() {
 
 	fmt.Println("Server starting on port 8080")
@@ -29,7 +33,7 @@ func main() {
 			return
 		}
 
-		var requestData map[string]string
+		var requestData ShortenRequest
 
 		err := json.NewDecoder(r.Body).Decode(&requestData)
 		if err != nil {
@@ -37,7 +41,7 @@ func main() {
 			return
 		}
 
-		originalUrl := requestData["url"]
+		originalUrl := requestData.URL
 
 		if originalUrl == "" {
 			http.Error(w, "URL is required", http.StatusBadRequest)
