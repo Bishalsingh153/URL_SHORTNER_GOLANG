@@ -29,7 +29,16 @@ func main() {
 			return
 		}
 
-		originalUrl := r.URL.Query().Get("url")
+		var requestData map[string]string
+
+		err := json.NewDecoder(r.Body).Decode(&requestData)
+		if err != nil {
+			http.Error(w, "invalid JSON", http.StatusBadRequest)
+			return
+		}
+
+		originalUrl := requestData["url"]
+
 		if originalUrl == "" {
 			http.Error(w, "URL is required", http.StatusBadRequest)
 			return
